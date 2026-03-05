@@ -85,7 +85,7 @@ export default function Page() {
         {/* CTA */}
         <div className="fade-up" style={{ animationDelay: "420ms" }}>
           <Link
-            href="/dashboard"
+            href="/igreja"
             className="group inline-flex items-center gap-3 border border-[oklch(0.45_0.13_163/0.40)] dark:border-[oklch(0.70_0.15_162/0.35)] px-8 py-4 relative overflow-hidden transition-all duration-500 hover:border-[oklch(0.45_0.13_163/0.90)] dark:hover:border-[oklch(0.70_0.15_162/0.80)]"
           >
             <span className="absolute inset-0 bg-[oklch(0.45_0.13_163/0.06)] dark:bg-[oklch(0.70_0.15_162/0.08)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
