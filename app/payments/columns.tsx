@@ -1,0 +1,87 @@
+// columns.tsx (client component) contain our column definitions for the payments table
+"use client";
+
+import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontalIcon } from "lucide-react";
+import { ArrowUpDownIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+// can use a Zod schema here to ensure the shape of our data
+export type Payment = {
+  id: string;
+  amount: number;
+  status: "pending" | "processing" | "success" | "failed";
+  email: string;
+};
+
+export const columns: ColumnDef<Payment>[] = [
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const payment = row.original;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontalIcon className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(payment.id)}
+            >
+              Copy payment ID
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>View customer</DropdownMenuItem>
+            <DropdownMenuItem>View payment details</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <div className="flex items-center gap-2">
+          Email
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            <ArrowUpDownIcon className="h-4 w-4" />
+          </Button>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "amount",
+    header: () => <div className="text-right pr-4">Amount</div>,
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("amount"));
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(amount);
+
+      return <div className="text-right tabular-nums pr-4">{formatted}</div>;
+    },
+  },
+];
