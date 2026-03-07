@@ -31,7 +31,7 @@ export default async function PaymentsPage() {
   const payments = await getPayments();
 
   return (
-    <div className="max-w-lg mx-auto py-10">
+    <div className="max-w-lg mx-auto px-4 py-10">
       <DataTable columns={columns} data={payments} />
     </div>
   );
