@@ -1,26 +1,17 @@
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from "@/components/ui/item";
-import Image from "next/image";
-import Link from "next/link";
-import { getMembros } from "@/lib/actions/members";
-import { Membro } from "@/lib/types";
-import { getStorageUrl } from "@/lib/supabase/storage";
-import { Avatar } from "@/components/ui/avatar";
+import MemberSearchHandler from "@/components/member-search-handler";
 
-export default async function IgrejaPage() {
-  const membros = await getMembros();
-
+export default function IgrejaPage() {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-4xl font-bold mb-4 tracking-tight">Rol de membros</h1>
       <p className="text-lg">Página do rol de membros</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mt-8">
+      <div className="max-w-md border rounded-md border-dashed space-y-2 p-2 mt-4">
+        <p className="text-sm">Procurar membros por nome:</p>
+        <MemberSearchHandler />
+      </div>
+
+      {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mt-8">
         {membros.map((membro: Membro) => (
           <Item variant="outline" asChild role="listitem" key={membro.id}>
             <Link href="#">
@@ -48,7 +39,7 @@ export default async function IgrejaPage() {
             </Link>
           </Item>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
