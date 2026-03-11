@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { Membro } from "../types";
-import { RolMember } from "@/app/(dashboard)/igreja/rol/columns";
+import { RolMember } from "@/app/(dashboard)/rol/columns";
 
 export async function searchMembros(query: string): Promise<Membro[]> {
   const supabase = await createClient();
