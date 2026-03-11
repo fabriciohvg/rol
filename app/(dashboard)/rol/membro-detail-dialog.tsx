@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getMembroById } from "@/lib/actions/members";
 import { Membro } from "@/lib/types";
 
@@ -51,10 +50,7 @@ function Field({ label, value }: { label: string; value: string | null }) {
 function LoadingSkeleton() {
   return (
     <div className="space-y-4 py-4">
-      <div className="flex items-center gap-4">
-        <Skeleton className="h-16 w-16 rounded-full" />
-        <Skeleton className="h-5 w-48" />
-      </div>
+      <Skeleton className="aspect-square w-32 rounded-md" />
       {Array.from({ length: 5 }).map((_, i) => (
         <div key={i} className="space-y-2">
           <Skeleton className="h-3 w-20" />
@@ -110,20 +106,18 @@ export function MembroDetailDialog({
             </TabsList>
 
             <TabsContent value="pessoais" className="space-y-4 pt-2">
-              <div className="flex items-center gap-4">
-                <Avatar size="lg">
-                  <AvatarImage
-                    src={
-                      membro.foto
-                        ? `https://bscjzyrtblhpoadluumz.supabase.co/storage/v1/object/public/images/${membro.foto}`
-                        : undefined
-                    }
+              <div className="relative aspect-square w-32 overflow-hidden rounded-md bg-muted">
+                {membro.foto ? (
+                  <img
+                    src={`https://bscjzyrtblhpoadluumz.supabase.co/storage/v1/object/public/images/${membro.foto}`}
+                    alt={membro.nome}
+                    className="h-full w-full object-cover"
                   />
-                  <AvatarFallback>
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-2xl font-medium text-muted-foreground">
                     {getInitials(membro.nome)}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-lg font-medium">{membro.nome}</span>
+                  </div>
+                )}
               </div>
               <Field label="Telefone" value={membro.telefone} />
               <Field label="Endereço" value={buildAddress(membro) || null} />
