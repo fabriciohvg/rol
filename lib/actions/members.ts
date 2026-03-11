@@ -45,22 +45,35 @@ export async function uploadMembroFoto(formData: FormData): Promise<string> {
   const membroId = formData.get("membroId") as string;
   const membroNome = formData.get("membroNome") as string;
 
+  if (!file || !membroId || !membroNome) {
+    throw new Error("Missing required fields: file, membroId, or membroNome");
+  }
+
   const firstName = membroNome.split(" ")[0].toLowerCase();
   const ext = file.name.split(".").pop();
   const filePath = `picture/${firstName}_${crypto.randomUUID()}.${ext}`;
 
   const { error: uploadError } = await supabase.storage
     .from("images")
-    .upload(filePath, file);
+    .upload(filePath, file, {
+      contentType: file.type, // ← explicitly set MIME type
+      upsert: false,
+    });
 
-  if (uploadError) throw new Error("Erro uploading foto");
+  if (uploadError) {
+    console.error("Supabase upload error:", uploadError); // ← now you'll see the real error
+    throw new Error(`Erro uploading foto: ${uploadError.message}`);
+  }
 
   const { error: updateError } = await supabase
     .from("membros")
     .update({ foto: filePath })
     .eq("id", membroId);
 
-  if (updateError) throw new Error("Erro updating membro foto");
+  if (updateError) {
+    console.error("Supabase update error:", updateError);
+    throw new Error(`Erro updating membro foto: ${updateError.message}`);
+  }
 
   return filePath;
 }
