@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getMembroById } from "@/lib/actions/members";
+import { getMembroById, uploadMembroFoto } from "@/lib/actions/members";
 import { Membro } from "@/lib/types";
+import { Camera, Loader2 } from "lucide-react";
 
 function formatDate(date: string | null) {
   if (!date) return "—";
@@ -74,6 +75,8 @@ export function MembroDetailDialog({
 }: MembroDetailDialogProps) {
   const [membro, setMembro] = useState<Membro | null>(null);
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!membroId || !open) return;
@@ -114,10 +117,48 @@ export function MembroDetailDialog({
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center text-2xl font-medium text-muted-foreground">
-                    {getInitials(membro.nome)}
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="flex h-full w-full flex-col items-center justify-center gap-1 text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors cursor-pointer"
+                  >
+                    {uploading ? (
+                      <Loader2 className="h-6 w-6 animate-spin" />
+                    ) : (
+                      <>
+                        <Camera className="h-6 w-6" />
+                        <span className="text-xs">Adicionar foto</span>
+                      </>
+                    )}
+                  </button>
                 )}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file || !membro) return;
+
+                    setUploading(true);
+                    try {
+                      const formData = new FormData();
+                      formData.append("file", file);
+                      formData.append("membroId", membro.id);
+                      formData.append("membroNome", membro.nome);
+
+                      const filePath = await uploadMembroFoto(formData);
+                      setMembro({ ...membro, foto: filePath });
+                    } catch (error) {
+                      console.error("Erro uploading foto:", error);
+                    } finally {
+                      setUploading(false);
+                      e.target.value = "";
+                    }
+                  }}
+                />
               </div>
               <Field label="Telefone" value={membro.telefone} />
               <Field label="Endereço" value={buildAddress(membro) || null} />

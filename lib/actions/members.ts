@@ -39,6 +39,32 @@ export async function getMembroById(id: string): Promise<Membro> {
   return data as Membro;
 }
 
+export async function uploadMembroFoto(formData: FormData): Promise<string> {
+  const supabase = await createClient();
+  const file = formData.get("file") as File;
+  const membroId = formData.get("membroId") as string;
+  const membroNome = formData.get("membroNome") as string;
+
+  const firstName = membroNome.split(" ")[0].toLowerCase();
+  const ext = file.name.split(".").pop();
+  const filePath = `picture/${firstName}_${crypto.randomUUID()}.${ext}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("images")
+    .upload(filePath, file);
+
+  if (uploadError) throw new Error("Erro uploading foto");
+
+  const { error: updateError } = await supabase
+    .from("membros")
+    .update({ foto: filePath })
+    .eq("id", membroId);
+
+  if (updateError) throw new Error("Erro updating membro foto");
+
+  return filePath;
+}
+
 export async function getMembros(): Promise<RolMember[]> {
   const supabase = await createClient();
 
