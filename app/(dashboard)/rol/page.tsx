@@ -1,5 +1,5 @@
-import { columns } from "@/app/(dashboard)/igreja/rol/columns";
-import { DataTableRol } from "@/app/(dashboard)/igreja/rol/data-table";
+import { columns } from "@/app/(dashboard)/rol/columns";
+import { DataTableRol } from "@/app/(dashboard)/rol/data-table";
 import { getMembros } from "@/lib/actions/members";
 
 export default async function RolPage() {

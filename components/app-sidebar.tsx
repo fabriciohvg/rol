@@ -14,7 +14,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { User2 } from "lucide-react";
+import { ChurchIcon, User2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -34,7 +34,7 @@ export function AppSidebar() {
   return (
     <Sidebar variant="floating">
       {/* Sidebar Header */}
-      <SidebarHeader>
+      {/* <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <Select defaultValue="ipa">
@@ -61,7 +61,7 @@ export function AppSidebar() {
             </Select>
           </SidebarMenuItem>
         </SidebarMenu>
-      </SidebarHeader>
+      </SidebarHeader> */}
 
       {/* Sidebar Content */}
       <SidebarContent>
@@ -70,27 +70,53 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={pathname === "/igreja"}>
-                  <Link href="/igreja" onClick={() => setOpenMobile(false)}>Rol de membros</Link>
+                <SidebarMenuButton asChild isActive={pathname === "/rol"}>
+                  <Link href="/rol" onClick={() => setOpenMobile(false)}>
+                    Rol de membros
+                  </Link>
                 </SidebarMenuButton>
-                <SidebarMenuBadge>1576</SidebarMenuBadge>
+                <SidebarMenuBadge>2146</SidebarMenuBadge>
+              </SidebarMenuItem>
+              {/* <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/igreja/stats"}
+                >
+                  <Link
+                    href="/igreja/stats"
+                    onClick={() => setOpenMobile(false)}
+                  >
+                    Estatísticas
+                  </Link>
+                </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={pathname === "/igreja/stats"}>
-                  <Link href="/igreja/stats" onClick={() => setOpenMobile(false)}>Estatísticas</Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={pathname === "/igreja/novos-membros"}>
-                  <Link href="/igreja/novos-membros" onClick={() => setOpenMobile(false)}>Novos membros</Link>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/igreja/novos-membros"}
+                >
+                  <Link
+                    href="/igreja/novos-membros"
+                    onClick={() => setOpenMobile(false)}
+                  >
+                    Novos membros
+                  </Link>
                 </SidebarMenuButton>
                 <SidebarMenuBadge>24</SidebarMenuBadge>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={pathname === "/igreja/batismos"}>
-                  <Link href="/igreja/batismos" onClick={() => setOpenMobile(false)}>Batismos</Link>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/igreja/batismos"}
+                >
+                  <Link
+                    href="/igreja/batismos"
+                    onClick={() => setOpenMobile(false)}
+                  >
+                    Batismos
+                  </Link>
                 </SidebarMenuButton>
-              </SidebarMenuItem>
+              </SidebarMenuItem> */}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -102,7 +128,10 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
-              <User2 /> Usuário
+              <ChurchIcon />{" "}
+              <span className="text-sm tracking-tight">
+                Igreja Presbiteriana de Anápolis
+              </span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

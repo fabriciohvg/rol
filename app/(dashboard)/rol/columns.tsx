@@ -2,6 +2,7 @@
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ColumnDef } from "@tanstack/react-table";
+import { PhoneCallIcon } from "lucide-react";
 
 export type RolMember = {
   id: string;
@@ -41,7 +42,18 @@ export const columns: ColumnDef<RolMember>[] = [
   },
   {
     accessorKey: "nome",
-    header: "Nome",
+    header: "Membro",
+    cell: ({ row }) => {
+      return (
+        <div className="flex flex-col max-w-lg">
+          <div className="">{row.getValue("nome")}</div>
+          <div className="flex items-center gap-2 text-sm tracking-tight tabular-nums">
+            <PhoneCallIcon size="12" />
+            {row.getValue("telefone")}
+          </div>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "telefone",

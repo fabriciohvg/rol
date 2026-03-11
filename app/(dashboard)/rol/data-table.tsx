@@ -54,7 +54,7 @@ export function DataTableRol<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  // const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -71,12 +71,12 @@ export function DataTableRol<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
+    // onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
-      columnVisibility,
+      // columnVisibility,
       pagination,
     },
     defaultColumn: {
@@ -84,10 +84,16 @@ export function DataTableRol<TData, TValue>({
       minSize: 25,
       maxSize: 150,
     },
+    initialState: {
+      columnVisibility: {
+        telefone: false,
+        situacao: false,
+      },
+    },
   });
 
   return (
-    <>
+    <div className="max-w-lg">
       <div className="flex items-center py-4">
         <Input
           placeholder="Procurar pelo nome..."
@@ -99,7 +105,7 @@ export function DataTableRol<TData, TValue>({
         />
       </div>
       <div className="overflow-hidden rounded-md border">
-        <Table>
+        <Table className="">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -167,10 +173,10 @@ export function DataTableRol<TData, TValue>({
         </Button>
       </div> */}
       <div className="flex items-center justify-between px-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        {/* <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} de{" "}
           {table.getFilteredRowModel().rows.length} linhas selecionadas.
-        </div>
+        </div> */}
         <div className="flex items-center space-x-6 lg:space-x-8">
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium">Linhas por página</p>
@@ -242,6 +248,6 @@ export function DataTableRol<TData, TValue>({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
