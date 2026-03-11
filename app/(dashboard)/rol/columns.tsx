@@ -43,10 +43,18 @@ export const columns: ColumnDef<RolMember>[] = [
   {
     accessorKey: "nome",
     header: "Membro",
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
+      const meta = table.options.meta as {
+        onClickNome?: (id: string) => void;
+      };
       return (
         <div className="flex flex-col max-w-lg">
-          <div className="">{row.getValue("nome")}</div>
+          <button
+            className="text-left hover:underline cursor-pointer"
+            onClick={() => meta?.onClickNome?.(row.original.id)}
+          >
+            {row.getValue("nome")}
+          </button>
           <div className="flex items-center gap-2 text-sm tracking-tight tabular-nums">
             <PhoneCallIcon size="12" />
             {row.getValue("telefone")}

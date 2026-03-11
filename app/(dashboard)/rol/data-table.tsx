@@ -42,6 +42,7 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
 } from "lucide-react";
+import { MembroDetailDialog } from "./membro-detail-dialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -60,6 +61,8 @@ export function DataTableRol<TData, TValue>({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [selectedMembroId, setSelectedMembroId] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const table = useReactTable({
     data,
@@ -83,6 +86,12 @@ export function DataTableRol<TData, TValue>({
       size: 100,
       minSize: 25,
       maxSize: 150,
+    },
+    meta: {
+      onClickNome: (id: string) => {
+        setSelectedMembroId(id);
+        setDialogOpen(true);
+      },
     },
     initialState: {
       columnVisibility: {
@@ -248,6 +257,11 @@ export function DataTableRol<TData, TValue>({
           </div>
         </div>
       </div>
+      <MembroDetailDialog
+        membroId={selectedMembroId}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </div>
   );
 }

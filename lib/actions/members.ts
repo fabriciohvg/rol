@@ -22,6 +22,23 @@ export async function searchMembros(query: string): Promise<Membro[]> {
   return data as Membro[];
 }
 
+export async function getMembroById(id: string): Promise<Membro> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("membros")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error("Erro fetching membro:", error);
+    throw new Error("Erro fetching membro");
+  }
+
+  return data as Membro;
+}
+
 export async function getMembros(): Promise<RolMember[]> {
   const supabase = await createClient();
 
