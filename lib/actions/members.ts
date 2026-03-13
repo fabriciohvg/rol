@@ -51,7 +51,7 @@ export async function uploadMembroFoto(formData: FormData): Promise<string> {
 
   const firstName = membroNome.split(" ")[0].toLowerCase();
   const ext = file.name.split(".").pop();
-  const filePath = `picture/${firstName}_${crypto.randomUUID()}.${ext}`;
+  const filePath = `picture/${crypto.randomUUID()}.${ext}`;
 
   const { error: uploadError } = await supabase.storage
     .from("images")
