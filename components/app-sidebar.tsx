@@ -77,6 +77,19 @@ export function AppSidebar() {
                 </SidebarMenuButton>
                 <SidebarMenuBadge>2146</SidebarMenuBadge>
               </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/novos-membros"}
+                >
+                  <Link
+                    href="/novos-membros"
+                    onClick={() => setOpenMobile(false)}
+                  >
+                    Novos membros
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
               {/* <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
