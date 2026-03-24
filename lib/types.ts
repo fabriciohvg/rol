@@ -47,3 +47,28 @@ export type MembroInsert = Omit<Membro, "id" | "created_at" | "updated_at"> & {
 
 // Para atualização (todos os campos são opcionais)
 export type MembroUpdate = Partial<MembroInsert>;
+
+export interface NovoMembro {
+  id: string;
+  nome: string;
+  telefone: string | null;
+  sexo: string | null;
+  data_nascimento: string | null;
+  email: string | null;
+  endereco: string | null;
+  cep: string | null;
+  estado_civil: string | null;
+  conjuge: string | null;
+  filhos: string | null;
+  filhos_nome: string | null;
+  profissao: string | null;
+  igreja_origem: string | null;
+  batizado: string | null;
+  nome_mae: string | null;
+  nome_pai: string | null;
+  naturalidade: string | null;
+  foto: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+  ata: string | null;
+}

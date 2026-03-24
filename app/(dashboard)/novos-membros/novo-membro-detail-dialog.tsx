@@ -9,25 +9,16 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getMembroById, uploadMembroFoto } from "@/lib/actions/members";
-import { Membro } from "@/lib/types";
+import {
+  getNovoMembroById,
+  uploadNovoMembroFoto,
+} from "@/lib/actions/novos-membros";
+import { NovoMembro } from "@/lib/types";
 import { Camera, Loader2 } from "lucide-react";
 
 function formatDate(date: string | null) {
   if (!date) return "—";
   return new Date(date + "T00:00:00").toLocaleDateString("pt-BR");
-}
-
-function buildAddress(membro: Membro) {
-  return [
-    membro.endereco,
-    membro.complemento,
-    membro.bairro,
-    membro.cidade,
-    membro.cep,
-  ]
-    .filter(Boolean)
-    .join(", ");
 }
 
 function getInitials(name: string) {
@@ -62,18 +53,18 @@ function LoadingSkeleton() {
   );
 }
 
-interface MembroDetailDialogProps {
+interface NovoMembroDetailDialogProps {
   membroId: string | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function MembroDetailDialog({
+export function NovoMembroDetailDialog({
   membroId,
   open,
   onOpenChange,
-}: MembroDetailDialogProps) {
-  const [membro, setMembro] = useState<Membro | null>(null);
+}: NovoMembroDetailDialogProps) {
+  const [membro, setMembro] = useState<NovoMembro | null>(null);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -83,7 +74,7 @@ export function MembroDetailDialog({
 
     setLoading(true);
     setMembro(null);
-    getMembroById(membroId)
+    getNovoMembroById(membroId)
       .then(setMembro)
       .finally(() => setLoading(false));
   }, [membroId, open]);
@@ -92,7 +83,9 @@ export function MembroDetailDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md max-h-[90dvh] flex flex-col">
         <DialogHeader>
-          <DialogTitle>{membro?.nome ?? "Detalhes do membro"}</DialogTitle>
+          <DialogTitle>
+            {membro?.nome ?? "Detalhes do novo membro"}
+          </DialogTitle>
         </DialogHeader>
 
         {loading ? (
@@ -109,7 +102,7 @@ export function MembroDetailDialog({
             </TabsList>
 
             <TabsContent value="pessoais" className="overflow-y-auto space-y-4 pt-2 pr-1">
-              <div className="relative aspect-square w-32 overflow-hidden rounded-md bg-muted">
+              <div className="relative aspect-square w-32 overflow-hidden rounded-md bg-muted shrink-0">
                 {membro.foto ? (
                   <img
                     src={`https://bscjzyrtblhpoadluumz.supabase.co/storage/v1/object/public/images/${membro.foto}`}
@@ -149,7 +142,7 @@ export function MembroDetailDialog({
                       formData.append("membroId", membro.id);
                       formData.append("membroNome", membro.nome);
 
-                      const filePath = await uploadMembroFoto(formData);
+                      const filePath = await uploadNovoMembroFoto(formData);
                       setMembro({ ...membro, foto: filePath });
                     } catch (error) {
                       console.error("Erro uploading foto:", error);
@@ -161,29 +154,28 @@ export function MembroDetailDialog({
                 />
               </div>
               <Field label="Telefone" value={membro.telefone} />
-              <Field label="Endereço" value={buildAddress(membro) || null} />
+              <Field label="Email" value={membro.email} />
+              <Field label="Endereço" value={membro.endereco} />
+              <Field label="CEP" value={membro.cep} />
               <Field
                 label="Data de nascimento"
                 value={formatDate(membro.data_nascimento)}
               />
+              <Field label="Sexo" value={membro.sexo} />
               <Field label="Estado civil" value={membro.estado_civil} />
               <Field label="Cônjuge" value={membro.conjuge} />
+              <Field label="Filhos" value={membro.filhos} />
+              <Field label="Nome dos filhos" value={membro.filhos_nome} />
               <Field label="Profissão" value={membro.profissao} />
+              <Field label="Naturalidade" value={membro.naturalidade} />
+              <Field label="Nome do pai" value={membro.nome_pai} />
+              <Field label="Nome da mãe" value={membro.nome_mae} />
             </TabsContent>
 
             <TabsContent value="eclesiasticos" className="overflow-y-auto space-y-4 pt-2 pr-1">
-              <Field label="Membro" value={membro.membro} />
-              <Field
-                label="Data admissão"
-                value={formatDate(membro.data_admissao)}
-              />
-              <Field label="Meio de admissão" value={membro.meio_admissao} />
-              <Field
-                label="Data demissão"
-                value={formatDate(membro.data_demissao)}
-              />
-              <Field label="Meio demissão" value={membro.meio_demissao} />
-              <Field label="Situação" value={membro.situacao} />
+              <Field label="Igreja de origem" value={membro.igreja_origem} />
+              <Field label="Batizado" value={membro.batizado} />
+              <Field label="Ata" value={membro.ata} />
             </TabsContent>
           </Tabs>
         ) : null}
