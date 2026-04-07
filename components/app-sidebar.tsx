@@ -75,7 +75,7 @@ export function AppSidebar() {
                     Rol de membros
                   </Link>
                 </SidebarMenuButton>
-                <SidebarMenuBadge>2146</SidebarMenuBadge>
+                {/* <SidebarMenuBadge>2146</SidebarMenuBadge> */}
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton
