@@ -13,6 +13,10 @@ export default async function NovosMembrosPage() {
       <p className="font-semibold tracking-tight text-sm text-muted-foreground mb-4">
         Gerencie os novos membros e suas informações
       </p>
+      <p className="font-semibold mb-2">
+        Novos membros registrados na recepção dia{" "}
+        <span className="font-bold tabular-nums bg-amber-300">21/03/2026</span>
+      </p>
       <div className="w-full">
         <DataTableNovosMembros columns={columns} data={data} />
       </div>
